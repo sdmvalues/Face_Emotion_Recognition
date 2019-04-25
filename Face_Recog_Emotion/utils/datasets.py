@@ -99,8 +99,9 @@ class DataManager(object):
 
 def get_labels(dataset_name):
     if dataset_name == 'fer2013':
-        return {0:'angry',1:'disgust',2:'fear',3:'happy',
-                4:'sad',5:'surprise',6:'peaceful'}
+        return {0:'you seem upset, how can I help?',1:'oh,you didnt like that,lets make a change',2:'you seem concerned,watsup buddy?',
+                3:'you are happy, so am I:-)',
+                4:'you seem down,wanna talk about it?',5:'didnt expect that,right?',6:'hi,i am Vision bot,can you make a face?'}
     elif dataset_name == 'imdb':
         return {0:'woman', 1:'man'}
     elif dataset_name == 'KDEF':
@@ -110,8 +111,9 @@ def get_labels(dataset_name):
 
 def get_class_to_arg(dataset_name='fer2013'):
     if dataset_name == 'fer2013':
-        return {'angry':0, 'disgust':1, 'fear':2, 'happy':3, 'sad':4,
-                'surprise':5, 'peaceful':6}
+        return {'you seem upset, how can I help?':0, 'oh,you didnt like that,lets make a change':1, 'you seem concerned,watsup buddy?':2,
+                'you are happy, so am I:-)':3, 'you seem down,wanna talk about it?':4,
+                'didnt expect that,right?':5, 'hi,i am Vision bot,can you make a face?':6}
     elif dataset_name == 'imdb':
         return {'woman':0, 'man':1}
     elif dataset_name == 'KDEF':
