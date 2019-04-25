@@ -23,6 +23,7 @@ emotion_labels = get_labels('fer2013')
 frame_window = 10
 emotion_offsets = (20, 40)
 
+interframe_wait_ms = 30
 # loading models
 detector = dlib.get_frontal_face_detector()
 emotion_classifier = load_model(emotion_model_path)
@@ -35,17 +36,17 @@ emotion_target_size = emotion_classifier.input_shape[1:3]
 # starting lists for calculating modes
 emotion_window = []
 
-# # Load a sample picture and learn how to recognize it.
-# soum_image = face_recognition.load_image_file("images/soum.jpg")
-# soum_face_encoding = face_recognition.face_encodings(soum_image)[0]
+#Load a sample picture and learn how to recognize it.
+soum_image = face_recognition.load_image_file("images/soum.jpg")
+soum_face_encoding = face_recognition.face_encodings(soum_image)[0]
 #
-# a = "images/yusuf.png"
-# Yusuf_image = face_recognition.load_image_file(a)
-# Yusuf_face_encoding = face_recognition.face_encodings(Yusuf_image)[0]
+# a = "images/Ananth.jpg"
+# Ananth_image = face_recognition.load_image_file(a)
+# Ananth_face_encoding = face_recognition.face_encodings(Ananth_image)[0]
 #
-# b = "images/sarit.jpg"
-# sarit_image = face_recognition.load_image_file(b)
-# sarit_face_encoding = face_recognition.face_encodings(sarit_image)[0]
+# b = "images/Alokedeep.jpg"
+# Alokedeep_image = face_recognition.load_image_file(b)
+# Alokedeep_face_encoding = face_recognition.face_encodings(Alokedeep_image)[0]
 #
 # c = "images/Ben.jpg"
 # Ben_image = face_recognition.load_image_file(c)
@@ -177,9 +178,9 @@ emotion_window = []
 
 # Create arrays of known face encodings and their names
 known_face_encodings = [
-    # soum_face_encoding
-    # Yusuf_face_encoding,
-    # sarit_face_encoding,
+    soum_face_encoding
+    # Ananth_face_encoding,
+    # Alokedeep_face_encoding
     # Ben_face_encoding
     # Graham_face_encoding,
     # Anurag_face_encoding
@@ -215,9 +216,9 @@ known_face_encodings = [
 
 ]
 known_face_names = [
-    # "Soum"
-    # "Yusuf",
-    # "Sarit",
+    "Soumyadip"
+    # "Ranganath Ananth",
+    # "Alokedeep"
     # "Ben"
     #  "Graham",
     # "Anurag"
@@ -297,7 +298,7 @@ def face_compare(frame,process_this_frame):
         left *= 2
         #cv2.rectangle(frame, (left, bottom+36), (right, bottom), (0, 0, 0), cv2.FILLED)
         font = cv2.FONT_HERSHEY_DUPLEX
-        cv2.putText(frame, name, (left + 6, bottom+20), font, 0.3, (255, 255, 255), 1)
+        cv2.putText(frame, name, (left + 10, bottom+20), font, 0.3, (255, 255, 255), 1)
         print ("text print")
 
 # starting video streaming
@@ -358,13 +359,13 @@ while cap.isOpened(): # True:
         except:
             continue
 
-        if emotion_text == 'angry':
+        if emotion_text == 'you seem upset, how can I help?':
             color = emotion_probability * np.asarray((255, 0, 0))
-        elif emotion_text == 'sad':
+        elif emotion_text == 'you seem down,wanna talk about it?':
             color = emotion_probability * np.asarray((0, 0, 255))
-        elif emotion_text == 'happy':
+        elif emotion_text == 'you are happy, so am I:-)':
             color = emotion_probability * np.asarray((255, 255, 0))
-        elif emotion_text == 'surprise':
+        elif emotion_text == 'didnt expect that,right?':
             color = emotion_probability * np.asarray((0, 255, 255))
         else:
             color = emotion_probability * np.asarray((0, 255, 0))
@@ -375,15 +376,17 @@ while cap.isOpened(): # True:
         if fname == "Unknown":
             name = emotion_text
         else:
-            name = str(fname) + " is " + str(emotion_text)
+            name = str(fname) + " : " + str(emotion_text)
         
         draw_bounding_box(face_utils.rect_to_bb(face_coordinates), rgb_image, color)
         draw_text(face_utils.rect_to_bb(face_coordinates), rgb_image, name,
-                  color, 0, -45, 1.5, 1)
+                  color, 0, -45, 1, 1)
 
 
     frame = cv2.cvtColor(rgb_image, cv2.COLOR_RGB2BGR)
+
     cv2.imshow('window_frame', frame)
+
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
